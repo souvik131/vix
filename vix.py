@@ -119,7 +119,7 @@ files_in_directory = os.listdir(directory_path)
 csv_files = [file for file in files_in_directory if file.endswith('.csv')]
 for file_path in csv_files:
   try:
-    date_string,variance,T=getVariance(file_path,False)
+    date_string,variance,T=getVariance(file_path,True)
     dataSet.append([date_string,variance,T])
   except Exception as e:
     print(file_path,e)
