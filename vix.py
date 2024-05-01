@@ -110,10 +110,8 @@ def getVariance(file_path,calcBasisVix=True):
   return date_string,variance,T
 
 
+#fetch data and calculate variance
 dataSet=[]
-
-
-
 directory_path = './'
 files_in_directory = os.listdir(directory_path)
 csv_files = [file for file in files_in_directory if file.endswith('.csv')]
@@ -124,29 +122,25 @@ for file_path in csv_files:
   except Exception as e:
     print(file_path,e)
 
+
+#plot term structure
 df=pd.DataFrame(dataSet,columns=["date","variance","time"])
 df["vol"]=np.sqrt(df["variance"]/df["time"])*100
 df=df.sort_values(by=['time'])
-
-
-
 dates = df["date"]
 values = df["vol"]
-
 fig, ax = plt.subplots()
 ax.plot(dates, values)
-
 plt.xticks(rotation=45) 
-
 plt.title('Term Structure')
 plt.xlabel('Date')
 plt.ylabel('Vol')
 plt.tight_layout() 
 plt.show()
 
+#plot fvol heatmap
 df.reset_index(inplace = True)
 ivol_matrix = pd.DataFrame(index=df['date'], columns=df['date'])
-
 for i in range(len(df)):
     for j in range(len(df)):
         if i != j:
@@ -157,10 +151,7 @@ for i in range(len(df)):
             else:
                 ivol = np.nan 
             ivol_matrix.iloc[i, j] = ivol
-
-
 ivol_matrix_float = ivol_matrix.astype(float)
-
 plt.figure(figsize=(10, 8))
 sns.heatmap(ivol_matrix_float, annot=True, fmt=".2f", cmap="viridis", cbar_kws={'label': 'Forward Volatility'})
 plt.title('Forward Volatility Between Expiries')
