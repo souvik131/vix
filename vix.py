@@ -94,7 +94,7 @@ def getVariance(date_string,df,script,k,calcBasisVix=True):
 
     #vix calculation
     T = Tmins / (daysInYear * hoursInDay * 60)
-    K0 = math.round(F/k)*k
+    K0 = round(F/k)*k
     if calcBasisVix:
       calls_otm = df[(df['STRIKE'] > F)].copy()
       puts_otm = df[(df['STRIKE'] < F) ].copy()
@@ -120,7 +120,7 @@ def getVariance(date_string,df,script,k,calcBasisVix=True):
   return "",0,0
 
     
-for stockname in ["NIFTY","BANKNIFTY","FINNIFTY","MIDCPNIFTY"]:
+for stockname in ["NIFTY"]:
   #fetch data and calculate variance
   dataSet=[]
   
@@ -132,6 +132,7 @@ for stockname in ["NIFTY","BANKNIFTY","FINNIFTY","MIDCPNIFTY"]:
   r = s.get(url, impersonate="chrome")
   data=r.json()["records"]
   df = pd.json_normalize(data["data"])
+  # print(df)
 
   unique_expiry_dates = data['expiryDates']
   for expiry in unique_expiry_dates:
@@ -156,6 +157,7 @@ for stockname in ["NIFTY","BANKNIFTY","FINNIFTY","MIDCPNIFTY"]:
   df=df.sort_values(by=['time'])
   dates = df["date"]
   values = df["vol"]
+  print(df)
   fig, ax = plt.subplots()
   ax.plot(dates, values)
   plt.xticks(rotation=45) 
