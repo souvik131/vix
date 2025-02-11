@@ -94,7 +94,7 @@ def getVariance(date_string,df,script,k,calcBasisVix=True):
 
     #vix calculation
     T = Tmins / (daysInYear * hoursInDay * 60)
-    K0 = math.floor(F/k)*k
+    K0 = math.round(F/k)*k
     if calcBasisVix:
       calls_otm = df[(df['STRIKE'] > F)].copy()
       puts_otm = df[(df['STRIKE'] < F) ].copy()
